@@ -16,7 +16,7 @@ scaler = MinMaxScaler()
 X_scaled = scaler.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(
-   X_scaled, y, test_size=0.2, random_state=42, stratify=y
+X_scaled, y, test_size=0.2, random_state=42, stratify=y
 )
 
 model = KNeighborsClassifier(n_neighbors=3)
@@ -29,7 +29,7 @@ print(accuracy)
 joblib.dump(model, "knn_penguins.joblib")
 
 with open("config.yaml", "w") as f:
-   f.write(
-       'selected_features: ["bill_depth_mm", "body_mass_g"]\n'
-       'path: "knn_penguins.joblib"\n'
-   )
+f.write(
+'selected_features: ["bill_depth_mm", "body_mass_g"]\n'
+'path: "knn_penguins.joblib"\n'
+)
