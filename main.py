@@ -1,35 +1,27 @@
 import pandas as pd
+
+df = pd.read_csv('parkinsons.csv')
+df.head()
+
+selected_features = ['MDVP:Shimmer(dB)', 'MDVP:Fo(Hz)']
+target = 'status'
 from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+data_for_analysis = scaler.fit_transform(df[selected_features])
+df.head()
+
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
+x_train, x_test, y_train, y_test = train_test_split(data_for_analysis,df[target],test_size=0.2,random_state=42)
+
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+model.fit(x_train, y_train)
+
 from sklearn.metrics import accuracy_score
+y_pred = model.predict(x_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy}")
+
 import joblib
 
-df = pd.read_csv("penguins.csv")
-
-df = df.dropna(subset=["sex"])
-
-X = df[["bill_depth_mm", "body_mass_g"]]
-y = df["sex"]
-
-scaler = MinMaxScaler()
-X_scaled = scaler.fit_transform(X)
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X_scaled, y, test_size=0.2, random_state=42, stratify=y
-)
-
-model = KNeighborsClassifier(n_neighbors=3)
-model.fit(X_train, y_train)
-
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print(accuracy)
-
-joblib.dump(model, "knn_penguins.joblib")
-
-with open("config.yaml", "w") as f:
-    f.write(
-        'selected_features: ["bill_depth_mm", "body_mass_g"]\n'
-        'path: "knn_penguins.joblib"\n'
-    )
+joblib.dump(model, 'Zoe_model.joblib')
