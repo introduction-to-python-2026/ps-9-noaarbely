@@ -24,4 +24,4 @@ print(f"Accuracy: {accuracy}")
 
 import joblib
 
-joblib.dump(model, 'Zoe_model.joblib')
+joblib.dump(model, 'Noa_model.joblib')
